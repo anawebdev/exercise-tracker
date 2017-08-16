@@ -9,7 +9,7 @@ const exerciseSchema = mongoose.Schema({
         type: Number
     },
     date: {
-        type: Number
+        type: String
     }
 })
 
@@ -19,7 +19,10 @@ const userSchema = mongoose.Schema({
         type: String,
         required: true
     },
-    exercise: [exerciseSchema]
+    exercise: [exerciseSchema],
+    total : {
+        type: Number
+    }
 })
 
 const UserInfo = module.exports = mongoose.model('User', userSchema, 'users')

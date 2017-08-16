@@ -48,8 +48,8 @@ app.get('/', (req, res) => {
 // Create new user
 app.post("/api/exercise/new-user", (req,res)=> {
   let newUsername = req.body.username.toString()
-  var newUser = new UserInfo({username: req.body.username, exercise: []})
-  console.log('new user' + newUser);
+  let newUser = new UserInfo({username: req.body.username, exercise: [], total: 0})
+  //console.log('new user' + newUser);
 
   // Check for duplicates && Add new user
   UserInfo.findOne({"username": newUsername}, (err,user)=>{
@@ -61,6 +61,33 @@ app.post("/api/exercise/new-user", (req,res)=> {
     }) 
   })
 })
+
+// Add exercise to any user
+// if no date use current
+app.post("/api/exercise/add",(req,res)=>{
+  //console.log(req.body)
+  UserInfo.findOne({"_id": req.body.userId},(err,user)=>{
+    user.exercise.push({
+      "description":req.body.description,
+      "duration":req.body.duration,
+      "date":req.body.date
+    })
+    user.total += Number(req.body.duration)
+    user.save((err, user)=>{
+      if (err) throw err
+      console.log(user)
+    })
+  })
+})
+
+// Get an array with all users
+app.get('api/exercise/users', (req,res)=>{
+
+})
+
+//Retrieve exercise log & total exercise count using user _id 
+
+// Retrieve part of the log
 
 //----------- End app logic
 
