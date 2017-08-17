@@ -86,7 +86,6 @@ app.post("/api/exercise/add",(req,res)=>{
 
 //Retrieve exercise log of any user
 app.get("/api/exercise/log/:userId/:from?/:to?/:limit?",(req,res)=>{
-  console.log(req.params)
   let limit = Number(req.params.limit)
   if(!isNaN(limit)){
     UserInfo.findOne({"_id":req.params.userId},(err,user)=>{
@@ -102,7 +101,7 @@ app.get("/api/exercise/log/:userId/:from?/:to?/:limit?",(req,res)=>{
         let dateLog = user.exercise.filter((value)=>{
           if(moment(req.params.from).isBefore(value.date) && 
              moment(req.params.to).isAfter(value.date) &&
-             moment(req.params.from).isBefore(req.params.after)
+             moment(req.params.from).isBefore(req.params.to)
              ) return value 
         })
         return res.json(dateLog)
@@ -120,7 +119,6 @@ app.get('/api/exercise/users', (req,res)=>{
     res.json(user)
   })
 })
-
 // Retrieve part of the log
 
 //----------- End app logic
