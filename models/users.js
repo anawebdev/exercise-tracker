@@ -20,7 +20,7 @@ const userSchema = mongoose.Schema({
         required: true
     },
     exercise: [exerciseSchema],
-    total : {
+    count : {
         type: Number
     }
 })

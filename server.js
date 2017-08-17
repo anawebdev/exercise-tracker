@@ -1,14 +1,12 @@
 const express = require('express')
 const app = express()
 const bodyParser = require('body-parser')
-const env = require('node-env-file')
 const mongo = require('mongodb')
 const MongoClient = require('mongodb').MongoClient
 const mongoose = require('mongoose')
-require('dotenv').config()
+const moment = require('moment')
 
-// Reads from .env file
-env(__dirname + '/.env')
+require('dotenv').config()
 
 const cors = require('cors')
 app.use(cors())
@@ -48,7 +46,7 @@ app.get('/', (req, res) => {
 // Create new user
 app.post("/api/exercise/new-user", (req,res)=> {
   let newUsername = req.body.username.toString()
-  let newUser = new UserInfo({username: req.body.username, exercise: [], total: 0})
+  let newUser = new UserInfo({username: req.body.username, exercise: [], count: 0})
   //console.log('new user' + newUser);
 
   // Check for duplicates && Add new user
@@ -63,29 +61,65 @@ app.post("/api/exercise/new-user", (req,res)=> {
 })
 
 // Add exercise to any user
-// if no date use current
 app.post("/api/exercise/add",(req,res)=>{
-  //console.log(req.body)
+  let today = new Date()
+  let dd = (today.getDate()<10) ? '0'+today.getDate() : today.getDate()
+  let mm = (today.getMonth()<10) ? '0'+today.getMonth() : today.getMonth()
+  let yyyy = today.getFullYear()
+  today = yyyy + '-' + mm + '-' + dd
+  let date = (req.body.date === "") ? today : req.body.date
+
   UserInfo.findOne({"_id": req.body.userId},(err,user)=>{
-    user.exercise.push({
-      "description":req.body.description,
-      "duration":req.body.duration,
-      "date":req.body.date
+    user.exercise.unshift({
+      "description": req.body.description,
+      "duration": req.body.duration,
+      "date": date
     })
-    user.total += Number(req.body.duration)
+    user.count += Number(req.body.duration)
     user.save((err, user)=>{
       if (err) throw err
-      console.log(user)
+      
     })
+    res.json(user)
   })
 })
 
-// Get an array with all users
-app.get('api/exercise/users', (req,res)=>{
-
+//Retrieve exercise log of any user
+app.get("/api/exercise/log/:userId/:from?/:to?/:limit?",(req,res)=>{
+  console.log(req.params)
+  let limit = Number(req.params.limit)
+  if(!isNaN(limit)){
+    UserInfo.findOne({"_id":req.params.userId},(err,user)=>{
+      if(err) throw err
+      let exerciseLog = user.exercise.filter((value,index)=>{
+        if(index<limit) return value
+      })
+      return res.json(exerciseLog)
+    })
+  } else if(moment(req.params.from,'YYYY-MM-DD',true).isValid() && moment(req.params.to,'YYYY-MM-DD',true).isValid()){
+      UserInfo.findOne({"_id":req.params.userId},(err, user)=>{
+        if(err) throw err
+        let dateLog = user.exercise.filter((value)=>{
+          if(moment(req.params.from).isBefore(value.date) && 
+             moment(req.params.to).isAfter(value.date) &&
+             moment(req.params.from).isBefore(req.params.after)
+             ) return value 
+        })
+        return res.json(dateLog)
+      })
+  } else {
+      UserInfo.findOne({"_id": req.params.userId.toString()}, (err,user)=>{
+        return res.json(user)
+      })
+  }
 })
 
-//Retrieve exercise log & total exercise count using user _id 
+// Get an array with all users and their ids
+app.get('/api/exercise/users', (req,res)=>{
+  UserInfo.find({},'username _id',(err,user)=>{
+    res.json(user)
+  })
+})
 
 // Retrieve part of the log
 
