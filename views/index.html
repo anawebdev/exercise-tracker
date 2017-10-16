@@ -4,7 +4,7 @@
    <head>
       <title>Exercise Tracker | Free Code Camp</title>
       <link rel="shortcut icon" href="https://cdn.hyperdev.com/us-east-1%3A52a203ff-088b-420f-81be-45bf559d01b1%2Ffavicon.ico" type="image/x-icon"/>
-      <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" type="text/css">
+      <link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet">
       <link href="style.css" rel="stylesheet" type="text/css">
    </head>
 
@@ -26,9 +26,30 @@
             <input id="dat" type="date" name="date" placeholder="date">
             <input type="submit" value="Submit">
           </form>
-          <p><strong>GET users's exercise log: </strong><code>GET /api/exercise/log?{userId}[&amp;from][&amp;to][&amp;limit]</code></p>
+          <p><strong>GET users's exercise log: </strong><code>GET /api/exercise/[log]/[userId]/{&amp;from}/{&amp;to}/{&amp;limit}</code></p>
           <p><strong>{ }</strong> = required, <strong>[ ]</strong> = optional</p>
           <p><strong>from, to</strong> = dates (yyyy-mm-dd); <strong>limit</strong> = number</p>
+          <h2>Examples</h2>
+          <p>Get the all the exercise info in .json format of user_1: 
+            <a href="http://www.awd-et.herokuapp.com/api/exercise/log/59944f5afa812a3440670d06" target="_blank">
+                  <span> /api/exercise/log/59944f5afa812a3440670d06 
+                  </span>
+            </a>
+          </p>
+
+          <p>Get the all the exercise info belonging to user_1, from 3rd of October until 15th of October 2017: 
+            <a href="http://www.awd-et.herokuapp.com/api/exercise/log/59944f5afa812a3440670d06/2017-10-03/2017-10-15"  target="_blank">
+              <span> /api/exercise/log/59944f5afa812a3440670d06/2017-10-03/2017-10-15 
+              </span>
+            </a>
+          </p>
+
+          <p>Get the first 3 instances of exercise info belonging to user_1, from 3rd of October until 15th of October 2017: 
+            <a href="http://www.awd-et.herokuapp.com/api/exercise/log/59944f5afa812a3440670d06/2017-09-03/2017-10-20/3" target="_blank">
+              <span> /api/exercise/log/59944f5afa812a3440670d06/2017-09-03/2017-10-20/3 
+              </span>
+            </a>
+          </p>
       </div>
    </body>
 

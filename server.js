@@ -12,6 +12,7 @@ const cors = require('cors')
 app.use(cors())
 
 // Connect to DB
+mongoose.Promise = require('bluebird');
 mongoose.connect(process.env.MONGODB_URI)
 const db = mongoose.connection
 
@@ -75,7 +76,8 @@ app.post("/api/exercise/add",(req,res)=>{
       "duration": req.body.duration,
       "date": date
     })
-    user.count += Number(req.body.duration)
+    let newCount = Number(user.count) + Number(req.body.duration);
+    user.count == newCount;
     user.save((err, user)=>{
       if (err) throw err
       
@@ -119,7 +121,6 @@ app.get('/api/exercise/users', (req,res)=>{
     res.json(user)
   })
 })
-// Retrieve part of the log
 
 //----------- End app logic
 

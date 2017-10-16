@@ -4,10 +4,10 @@
 }
 
 body {
-  font-family:sans-serif;
+  font-family: 'Lato', sans-serif;
   margin: 25px;
-  color: #222;
-  background-color: #f5f5f5;
+  color: #1F2228;
+  background-color: #FAF9F9;
 }
 
 h1 {
@@ -26,7 +26,7 @@ p {
 form {
   margin-bottom: 25px;
   padding: 15px;
-  background-color: #87D37C;
+  background-color: #BEE3DB;
   display: inline-block;
   width: 100%;
   max-width: 340px;
@@ -38,7 +38,7 @@ input {
   margin-bottom: 10px;
   padding: 5px;
   width: 100%;
-  border: 1px solid lightgrey;
+  border: 1px solid #FAF9F9;
   border-radius: 3px;
   font-size: 16px;
 }
@@ -53,12 +53,16 @@ input[type=submit] {
 }
 
 input[type=submit]:hover {
-  background-color: #FFFEC4;
+  background-color: #FFD6BA;
 }
 
 code {
   font-family: monospace;
   font-size: 1.2em;
-  background-color: #FFFEC4;
+  background-color: #FFD6BA;
   padding: 2px;
+}
+
+a {
+  color: #555B6E;
 }
